@@ -13,18 +13,43 @@ class WithdrawService
         $user_rest_money = $user->balance - $amount;
 
         if ($user->account_type == 'individual') {
+           
             if (Carbon::now()->dayOfWeek == Carbon::FRIDAY) {
                 $fee = 0;
             } elseif ($amount == 5000 && !$this->match_with_5000($user->id)) {
                 $fee = 0;
-            } elseif ($amount != 1000) {
+            }  elseif($amount >1000){
+                
+                $rate = 0.015;
+                 $rate_normal = (0.015 / 100);
+                 
+                 
+
+                 $restt = $amount - 1000;
+               
+                 
+                 
+                $fee = $restt * $rate_normal;
+                
+               
+                
+                 $user_rest_money = $user->balance - $amount - $fee;
+                 
+                
+            }
+            elseif ($amount != 1000) {
                 $fee = $this->calculateFee($amount, 0.015);
                 $user_rest_money -= $fee;
             }
+           
         } elseif ($user->account_type == 'business') {
+            
             $feeRate = $this->getBusinessFeeRate($user->id);
             $fee = $this->calculateFee($amount, $feeRate);
+            
             $user_rest_money -= $fee;
+          
+            
         }
 
         $user->update([
