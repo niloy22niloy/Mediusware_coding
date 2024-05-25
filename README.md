@@ -16,5 +16,5 @@
 - Add Database name in .env file.
 - Use Php artisan migrate.
 - Done....
-- 
+
 
