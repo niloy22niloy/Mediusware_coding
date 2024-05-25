@@ -3,6 +3,7 @@
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
         </h2>
+       
 
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Update your account's profile information and email address.") }}
@@ -46,9 +47,27 @@
                 </div>
             @endif
         </div>
+        <div>
+            <x-input-label for="account_type" :value="__('Account Type')" />
+            <select id="account_type" name="account_type" class="mt-1 block w-full" required autofocus autocomplete="name" readonly disabled>
+                <option value="individual" {{ old('account_type', $user->account_type) == 'individual' ? 'selected' : '' }}>Individual</option>
+                <option value="business" {{ old('account_type', $user->account_type) == 'business' ? 'selected' : '' }}>Business</option>
+            </select>
+            
+            <x-input-error class="mt-2" :messages="$errors->get('account_type')" />
+        </div>
+        
+       
+        <div>
+            <x-input-label for="balance" :value="__('Available Balance')" />
+            <x-text-input  readonly disabled  id="balance"  type="number" class="mt-1 block w-full" :value="old('balance', $user->balance)" required autofocus autocomplete="balance" />
+            <x-input-error class="mt-2" :messages="$errors->get('balance')" />
+        </div>
+  
+       
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="flex items-center gap-4" style="margin-bottom:10px;">
+            <x-danger-button>{{ __('Update Data') }}</x-danger-button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -61,4 +80,9 @@
             @endif
         </div>
     </form>
+   
+   
+
+
+
 </section>
